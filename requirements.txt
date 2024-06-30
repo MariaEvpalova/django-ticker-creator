@@ -1,0 +1,5 @@
+django
+gunicorn
+moviepy
+Pillow
+psycopg2-binary
