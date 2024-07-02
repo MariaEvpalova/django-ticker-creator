@@ -1,9 +1,8 @@
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from moviepy.editor import TextClip, CompositeVideoClip
-from moviepy.config import change_settings
-from .models import Request
 import os
+from .models import Request
 
 @csrf_exempt
 def create_video(request):
@@ -18,8 +17,11 @@ def create_video(request):
         # Save the request to the database with additional information
         Request.objects.create(text=text, ip_address=ip_address, user_agent=user_agent)
 
-        # Set the ImageMagick binary path
-        os.environ['IMAGEMAGICK_BINARY'] = '/usr/bin/convert'
+        # Check if running in Colab environment and set ImageMagick path accordingly
+        if os.path.exists('/usr/bin/convert'):
+            os.environ['IMAGEMAGICK_BINARY'] = '/usr/bin/convert'
+        else:
+            os.environ['IMAGEMAGICK_BINARY'] = '/usr/local/bin/convert'
 
         # Create the video
         text_clip = TextClip(text, fontsize=72, color='white')
@@ -38,3 +40,4 @@ def create_video(request):
         return response
     except Exception as e:
         return HttpResponse(f"Error creating video: {e}", status=500)
+
