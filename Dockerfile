@@ -14,6 +14,9 @@ COPY requirements.txt /code/
 # Install the required dependencies
 RUN pip install -r requirements.txt
 
+# Install ImageMagick
+RUN apt-get update && apt-get install -y imagemagick
+
 # Copy the Django project code to the container
 COPY . /code/
 
