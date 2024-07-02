@@ -3,3 +3,4 @@ gunicorn
 moviepy
 Pillow
 psycopg2-binary
+python-decouple

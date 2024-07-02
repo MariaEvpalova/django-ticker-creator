@@ -14,11 +14,11 @@ COPY requirements.txt /code/
 # Install the required dependencies
 RUN pip install -r requirements.txt
 
-# Install ImageMagick
-RUN apt-get update && apt-get install -y imagemagick
-
-# Update ImageMagick policy to allow necessary operations
-RUN sed -i 's/rights="none"/rights="read|write"/g' /etc/ImageMagick-6/policy.xml
-
 # Copy the Django project code to the container
 COPY . /code/
+
+# Set environment variables for the database
+ENV DOCKER=True
+ENV POSTGRES_DB=mydatabase
+ENV POSTGRES_USER=myuser
+ENV POSTGRES_PASSWORD=mypassword
