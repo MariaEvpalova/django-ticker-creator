@@ -19,7 +19,7 @@ def create_video(request):
         Request.objects.create(text=text, ip_address=ip_address, user_agent=user_agent)
 
         # Set the ImageMagick binary path
-        change_settings({"IMAGEMAGICK_BINARY": "/usr/bin/convert"})
+        os.environ['IMAGEMAGICK_BINARY'] = '/usr/bin/convert'
 
         # Create the video
         text_clip = TextClip(text, fontsize=72, color='white')
