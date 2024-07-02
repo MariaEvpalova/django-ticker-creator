@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-odbm(ll(a7a-&)_!pr@08mvany_@*iku&^27gl^k*ap$(126by
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
