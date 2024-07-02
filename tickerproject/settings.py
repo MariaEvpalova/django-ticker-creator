@@ -10,6 +10,30 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+# settings.py
+
+import os
+import re
+
+ALLOWED_HOSTS = ['*']
+
+# Extract NGROK_URL from environment variable if set
+ngrok_url = os.environ.get('NGROK_URL')
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.ngrok-free.app',
+]
+
+if ngrok_url:
+    # Extract domain from ngrok_url and add to CSRF_TRUSTED_ORIGINS
+    match = re.match(r'^https:\/\/([a-z0-9\-]+)\.ngrok-free\.app', ngrok_url)
+    if match:
+        domain = match.group(1)
+        CSRF_TRUSTED_ORIGINS.append(f'https://{domain}.ngrok-free.app')
+
+# Include this import at the top of your settings.py
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -24,8 +48,6 @@ SECRET_KEY = 'django-insecure-odbm(ll(a7a-&)_!pr@08mvany_@*iku&^27gl^k*ap$(126by
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = ['*']
 
 
 # Application definition
