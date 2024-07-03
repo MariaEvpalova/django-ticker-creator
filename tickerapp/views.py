@@ -24,7 +24,7 @@ def create_video(request):
             os.environ['IMAGEMAGICK_BINARY'] = '/usr/local/bin/convert'
 
         # Create the text clip
-        text_clip = TextClip(text, fontsize=24, color='white', size=(100, 100), method='caption')
+        text_clip = TextClip(text, fontsize=72, color='white', size=(100, 100), method='caption')
         text_width = text_clip.w
 
         # Calculate the start and end positions
