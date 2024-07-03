@@ -17,22 +17,21 @@ def create_video(request):
         # Save the request to the database with additional information
         Request.objects.create(text=text, ip_address=ip_address, user_agent=user_agent)
 
-        # Check if running in Colab environment and set ImageMagick path accordingly
+        # Set ImageMagick path
         if os.path.exists('/usr/bin/convert'):
             os.environ['IMAGEMAGICK_BINARY'] = '/usr/bin/convert'
-        else:
+        elif os.path.exists('/usr/local/bin/convert'):
             os.environ['IMAGEMAGICK_BINARY'] = '/usr/local/bin/convert'
 
         # Create the text clip
-        text_clip = TextClip(text, fontsize=72, color='white', size=(100, 100), method='caption')
+        text_clip = TextClip(text, fontsize=72, color='white')
         text_width = text_clip.w
 
-        # Calculate the start and end positions
-        start_x = 0
-        end_x = -text_width
+        # Define the animation function for moving text
+        def moving_text(t):
+            return (100 - (100 + text_width) * t / 3, 'center')
 
-        # Set position and duration
-        text_clip = text_clip.set_position(lambda t: (start_x - text_width * t / 3, 'center')).set_duration(3)
+        text_clip = text_clip.set_position(moving_text).set_duration(3)
         video = CompositeVideoClip([text_clip], size=(100, 100)).set_duration(3)
         video.write_videofile(output_file, fps=24)
 
@@ -45,4 +44,3 @@ def create_video(request):
         return response
     except Exception as e:
         return HttpResponse(f"Error creating video: {e}", status=500)
-
