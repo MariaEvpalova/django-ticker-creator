@@ -23,11 +23,16 @@ def create_video(request):
         else:
             os.environ['IMAGEMAGICK_BINARY'] = '/usr/local/bin/convert'
 
-        # Create the video
-        text_clip = TextClip(text, fontsize=72, color='white')
+        # Create the text clip
+        text_clip = TextClip(text, fontsize=24, color='white', size=(100, 100), method='caption')
         text_width = text_clip.w
-        start_x = 50
-        text_clip = text_clip.set_position(lambda t: (start_x - text_width * t / 3, 'center')).set_duration(3)
+
+        # Calculate the start and end positions
+        start_x = 100
+        end_x = -text_width
+
+        # Set position and duration
+        text_clip = text_clip.set_position(lambda t: (start_x + (end_x - start_x) * t / 3, 'center')).set_duration(3)
         video = CompositeVideoClip([text_clip], size=(100, 100)).set_duration(3)
         video.write_videofile(output_file, fps=24)
 
