@@ -28,7 +28,7 @@ def create_video(request):
         text_width = text_clip.w
 
         # Calculate the start and end positions
-        start_x = 100
+        start_x = 0
         end_x = -text_width
 
         # Set position and duration
