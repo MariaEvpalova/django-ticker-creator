@@ -32,7 +32,7 @@ def create_video(request):
         end_x = -text_width
 
         # Set position and duration
-        text_clip = text_clip.set_position(lambda t: (start_x + (end_x - start_x) * t / 3, 'center')).set_duration(3)
+        text_clip = text_clip.set_position(lambda t: (start_x - text_width * t / 3, 'center')).set_duration(3)
         video = CompositeVideoClip([text_clip], size=(100, 100)).set_duration(3)
         video.write_videofile(output_file, fps=24)
 
